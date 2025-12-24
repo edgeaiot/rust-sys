@@ -123,6 +123,121 @@ The `main` function:
 2. **Wrong reference type**: Use `&mut` for mutable references, `&` for immutable
 3. **Multiple mutable references**: Rust won't allow multiple `&mut` references to the same data
 
+## Best Practices
+
+### Function Design
+1. **Single Responsibility**: Each function should do one thing well
+   ```rust
+   // Good: Single purpose
+   fn add_world(s: &mut String) {
+       s.push_str(" world!");
+   }
+   
+   // Avoid: Multiple responsibilities
+   fn process_and_print(s: &mut String) {
+       s.push_str(" world!");
+       println!("{}", s);
+       // Too many responsibilities
+   }
+   ```
+
+2. **Clear Function Names**: Use descriptive names that explain what the function does
+   ```rust
+   // Good: Clear intent
+   fn append_world(s: &mut String) { }
+   
+   // Avoid: Vague names
+   fn do_stuff(s: &mut String) { }
+   ```
+
+3. **Prefer Borrowing Over Ownership**: Use references when you don't need ownership
+   ```rust
+   // Good: Borrows, doesn't take ownership
+   fn print_string(s: &str) { }
+   
+   // Less ideal: Takes ownership (unless you need it)
+   fn print_string(s: String) { }
+   ```
+
+### Reference Usage
+1. **Use Immutable References by Default**: Only use `&mut` when modification is necessary
+   ```rust
+   // Good: Immutable reference for reading
+   fn display(s: &str) {
+       println!("{}", s);
+   }
+   
+   // Only use mutable when needed
+   fn modify(s: &mut String) {
+       s.push_str("!");
+   }
+   ```
+
+2. **Minimize Mutable References**: Rust's borrow checker prevents data races, but prefer immutability
+   ```rust
+   // Good: Immutable when possible
+   let s = String::from("Hello");
+   display(&s);
+   
+   // Only use mut when you need to change
+   let mut s = String::from("Hello");
+   modify(&mut s);
+   ```
+
+### String Handling
+1. **Choose the Right String Type**: Use `&str` for function parameters when you don't need ownership
+   ```rust
+   // Good: Accepts both &str and String
+   fn greet(name: &str) {
+       println!("Hello, {}!", name);
+   }
+   
+   // Can call with:
+   greet("Alice");              // &str
+   greet(&String::from("Bob")); // &String coerces to &str
+   ```
+
+2. **Use `String` for Ownership**: When you need to own and modify strings
+   ```rust
+   // Good: Owns and can modify
+   let mut s = String::from("Hello");
+   s.push_str(" world!");
+   ```
+
+3. **Avoid Unnecessary Allocations**: Prefer string slices for read-only operations
+   ```rust
+   // Good: No allocation
+   fn process(text: &str) { }
+   
+   // Avoid: Unnecessary allocation
+   fn process(text: String) { }
+   ```
+
+### Code Organization
+1. **Keep Functions Focused**: Small, focused functions are easier to test and maintain
+2. **Document Complex Logic**: Use comments to explain why, not what
+   ```rust
+   // Good: Explains why
+   // Use mutable reference to avoid cloning the entire string
+   fn append_suffix(s: &mut String) { }
+   ```
+
+3. **Follow Rust Conventions**: Use `snake_case` for functions, clear parameter names
+   ```rust
+   // Good: Follows conventions
+   fn add_world_to_string(s: &mut String) { }
+   ```
+
+### Error Prevention
+1. **Leverage the Compiler**: Let Rust's type system catch errors at compile time
+2. **Trust the Borrow Checker**: It prevents many common bugs
+3. **Read Compiler Messages**: Rust's error messages are helpful - learn from them
+
+### Performance Considerations
+1. **Prefer References**: Passing by reference avoids copying
+2. **Use Slices**: `&str` and `&[T]` are more efficient than owned types for reading
+3. **Minimize Mutations**: Immutable code is easier to optimize
+
 ## Next Steps
 
 After mastering this lesson, move on to:

@@ -178,11 +178,211 @@ The `main.rs` file demonstrates all these concepts with practical examples. Each
 3. **Zero-Cost Abstractions**: Safety doesn't mean slower code
 4. **Compile-Time Guarantees**: Many errors caught before runtime
 
-### Best Practices
-1. **Prefer immutability**: Only use `mut` when necessary
-2. **Use type annotations**: When types aren't obvious
-3. **Shadowing is OK**: It's idiomatic Rust, not a code smell
-4. **Constants for magic numbers**: Use `const` for values that never change
+## Best Practices
+
+### Immutability
+1. **Prefer Immutable Variables**: Only use `mut` when you actually need to modify
+   ```rust
+   // Good: Immutable by default
+   let x = 5;
+   let name = "Alice";
+   
+   // Only use mut when needed
+   let mut counter = 0;
+   counter += 1;
+   ```
+
+2. **Question Mutability**: Before adding `mut`, ask "Do I really need to change this?"
+   ```rust
+   // Often you can avoid mut with shadowing
+   let value = 5;
+   let value = value + 1;  // Shadowing instead of mut
+   ```
+
+### Type Annotations
+1. **Be Explicit When Helpful**: Add type annotations when types aren't obvious
+   ```rust
+   // Good: Type is clear from context
+   let x = 5;
+   
+   // Good: Type annotation clarifies intent
+   let port: u16 = 8080;
+   let max_users: usize = 100;
+   ```
+
+2. **Use Type Annotations for Constants**: Always required, but good practice
+   ```rust
+   // Required for constants
+   const MAX_CONNECTIONS: u32 = 100;
+   const TIMEOUT_SECONDS: f64 = 30.0;
+   ```
+
+3. **Let Inference Work**: Don't over-annotate when types are obvious
+   ```rust
+   // Good: Inference is clear
+   let name = "Alice";
+   let age = 25;
+   
+   // Unnecessary: Type is obvious
+   let name: &str = "Alice";  // Usually not needed
+   ```
+
+### Variable Shadowing
+1. **Shadowing is Idiomatic**: It's a Rust feature, not a bug
+   ```rust
+   // Good: Converting types
+   let input = "42";
+   let input: i32 = input.parse().unwrap();
+   ```
+
+2. **Use Shadowing for Transformations**: When you're transforming a value
+   ```rust
+   // Good: Clear transformation
+   let user_input = get_input();
+   let user_input = user_input.trim();
+   let user_input = user_input.to_lowercase();
+   ```
+
+3. **Avoid Confusing Shadowing**: Don't shadow in ways that confuse readers
+   ```rust
+   // Avoid: Confusing shadowing
+   let x = 5;
+   let x = "hello";  // Completely different type, might confuse
+   ```
+
+### Constants vs Variables
+1. **Use Constants for Magic Numbers**: Replace magic numbers with named constants
+   ```rust
+   // Good: Named constant
+   const MAX_RETRIES: u32 = 3;
+   if retry_count < MAX_RETRIES { }
+   
+   // Avoid: Magic number
+   if retry_count < 3 { }  // What does 3 mean?
+   ```
+
+2. **Constants for Configuration**: Values that don't change during execution
+   ```rust
+   const API_BASE_URL: &str = "https://api.example.com";
+   const DEFAULT_TIMEOUT: u64 = 30;
+   ```
+
+3. **Use Variables for Runtime Values**: Values that change or are computed
+   ```rust
+   // Good: Runtime value
+   let user_age = calculate_age(birth_date);
+   let current_time = get_current_time();
+   ```
+
+### String Types
+1. **Prefer `&str` for Parameters**: More flexible, accepts both `&str` and `String`
+   ```rust
+   // Good: Accepts both types
+   fn process(text: &str) { }
+   
+   process("literal");
+   process(&String::from("owned"));
+   ```
+
+2. **Use `String` When You Need Ownership**: For building or modifying strings
+   ```rust
+   // Good: Need to own and modify
+   let mut message = String::from("Hello");
+   message.push_str(" world!");
+   ```
+
+3. **Avoid Unnecessary Conversions**: Don't convert `&str` to `String` unnecessarily
+   ```rust
+   // Avoid: Unnecessary conversion
+   let s = "hello".to_string();
+   
+   // Good: Use string literal directly
+   let s = "hello";
+   ```
+
+### Type Selection
+1. **Choose Appropriate Integer Types**: Consider size and signedness
+   ```rust
+   // Good: Appropriate types
+   let age: u8 = 25;           // Age can't be negative
+   let temperature: i16 = -5;   // Temperature can be negative
+   let file_size: u64 = 1024;   // File sizes are large
+   ```
+
+2. **Use `usize` for Indices**: Standard for array/vector indexing
+   ```rust
+   // Good: usize for indexing
+   let index: usize = 0;
+   let item = array[index];
+   ```
+
+3. **Prefer `f64` Over `f32`**: Unless you have specific memory constraints
+   ```rust
+   // Good: f64 is default
+   let pi: f64 = 3.14159;
+   ```
+
+### Variable Naming
+1. **Use Descriptive Names**: Names should explain purpose
+   ```rust
+   // Good: Clear purpose
+   let user_count = 10;
+   let max_retries = 3;
+   
+   // Avoid: Vague names
+   let x = 10;
+   let temp = 3;
+   ```
+
+2. **Follow Rust Conventions**: Use `snake_case` for variables
+   ```rust
+   // Good: snake_case
+   let user_name = "Alice";
+   let max_connections = 100;
+   ```
+
+3. **Use Constants for Constants**: `SCREAMING_SNAKE_CASE` for constants
+   ```rust
+   // Good: SCREAMING_SNAKE_CASE for constants
+   const MAX_USERS: u32 = 1000;
+   const API_VERSION: &str = "v1";
+   ```
+
+### Initialization
+1. **Initialize Variables**: Rust requires initialization, use it wisely
+   ```rust
+   // Good: Initialize when declared
+   let value = 42;
+   
+   // Good: Initialize in conditional
+   let value = if condition { 10 } else { 20 };
+   ```
+
+2. **Avoid Uninitialized Variables**: Rust prevents this, but be aware
+   ```rust
+   // Rust won't let you use uninitialized variables
+   let x: i32;
+   // println!("{}", x);  // Error!
+   x = 42;  // Must initialize before use
+   ```
+
+### Performance Tips
+1. **Prefer Stack Types**: Use stack-allocated types when possible
+   ```rust
+   // Good: Stack-allocated
+   let number: i32 = 42;
+   let array: [i32; 5] = [1, 2, 3, 4, 5];
+   ```
+
+2. **Use References**: Avoid unnecessary cloning
+   ```rust
+   // Good: Borrow instead of clone
+   let text = String::from("hello");
+   process(&text);  // Borrow
+   
+   // Avoid: Unnecessary clone
+   process(text.clone());  // Clones entire string
+   ```
 
 ## Exercises to Try
 
