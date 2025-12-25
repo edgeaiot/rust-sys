@@ -535,7 +535,6 @@ After mastering enums, you're ready for:
 
 ## Additional Resources
 
-- [The Rust Book - Enums](https://doc.rust-lang.org/book/ch06-00-enums.html)
 - [Rust by Example - Enums](https://doc.rust-lang.org/rust-by-example/custom_types/enum.html)
 - [Rust by Example - Option](https://doc.rust-lang.org/rust-by-example/std/option.html)
 - [Rust by Example - Result](https://doc.rust-lang.org/rust-by-example/error/result.html)
