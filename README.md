@@ -29,6 +29,11 @@ Complete guide to Rust structs including struct definition, methods, associated 
 
 **See:** [GUIDE.md](04.struct/GUIDE.md) for detailed lecture notes.
 
+### 05.enum
+Comprehensive guide to Rust enums including enum variants, pattern matching, Option and Result types, methods on enums, state machines, and error handling patterns.
+
+**See:** [GUIDE.md](05.enum/GUIDE.md) for detailed lecture notes.
+
 ## Building and Running
 
 To build all projects, use:
@@ -66,6 +71,12 @@ cd 04.struct
 cargo run
 ```
 
+Or:
+```bash
+cd 05.enum
+cargo run
+```
+
 ## Structure
 
 - Each project has its own `Cargo.toml` configuration file
@@ -80,3 +91,4 @@ cargo run
 3. **02.function** - Master Rust functions: parameters, return values, references, and function patterns
 4. **03.control_flow** - Learn control flow: if/else, loops, and powerful pattern matching with match
 5. **04.struct** - Create custom data types with structs: fields, methods, associated functions, and more
+6. **05.enum** - Master Rust enums: variants with data, pattern matching, Option, Result, and state machines
