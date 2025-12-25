@@ -24,6 +24,11 @@ Comprehensive guide to Rust control flow including if/else expressions, loops (l
 
 **See:** [GUIDE.md](03.control_flow/GUIDE.md) for detailed lecture notes.
 
+### 04.struct
+Complete guide to Rust structs including struct definition, methods, associated functions, tuple structs, unit structs, nested structs, and best practices.
+
+**See:** [GUIDE.md](04.struct/GUIDE.md) for detailed lecture notes.
+
 ## Building and Running
 
 To build all projects, use:
@@ -55,6 +60,12 @@ cd 03.control_flow
 cargo run
 ```
 
+Or:
+```bash
+cd 04.struct
+cargo run
+```
+
 ## Structure
 
 - Each project has its own `Cargo.toml` configuration file
@@ -68,3 +79,4 @@ cargo run
 2. **01.variable** - Understand Rust's variable system, immutability, and type system
 3. **02.function** - Master Rust functions: parameters, return values, references, and function patterns
 4. **03.control_flow** - Learn control flow: if/else, loops, and powerful pattern matching with match
+5. **04.struct** - Create custom data types with structs: fields, methods, associated functions, and more
