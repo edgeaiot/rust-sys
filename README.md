@@ -36,44 +36,21 @@ Comprehensive guide to Rust enums including enum variants, pattern matching, Opt
 
 ## Building and Running
 
-To build all projects, use:
+To build a project:
 ```bash
+cd <project-directory>
 cargo build
 ```
 
-To run a specific project, navigate to its directory and use:
+To run a project:
+```bash
+cd <project-directory>
+cargo run
+```
+
+**Example:**
 ```bash
 cd 00.hello
-cargo run
-```
-
-Or:
-```bash
-cd 01.variable
-cargo run
-```
-
-Or:
-```bash
-cd 02.function
-cargo run
-```
-
-Or:
-```bash
-cd 03.control_flow
-cargo run
-```
-
-Or:
-```bash
-cd 04.struct
-cargo run
-```
-
-Or:
-```bash
-cd 05.enum
 cargo run
 ```
 
